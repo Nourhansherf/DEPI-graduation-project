@@ -1,4 +1,4 @@
-# Basic Notes (1)
+# Information Gathering
 
 Author: Nourhan Sherif
 Status: Published
