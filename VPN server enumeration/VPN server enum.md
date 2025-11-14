@@ -10,11 +10,11 @@ Created time: October 8, 2025 10:35 PM
 
 `nmap -p- 10.200.118.12 -v`
 
-![image.png](image.png)
+![image.png](images/image.png)
 
 `nmap -p 22,80 -A 10.200.118.12 -v`
 
-![image.png](image%201.png)
+![image.png](images/image%201.png)
 
 ---
 
@@ -28,27 +28,27 @@ and a nikto scan `nikto -h [http://10.200.118.12](http://10.200.118.12/)`
 
 and a dir scan `gobuster dir -u [http://10.200.118.12](http://10.200.118.12/) -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt` 
 
-![image.png](image%202.png)
+![image.png](images/image%202.png)
 
 we got a “/vpn” in the directory scanning 
 
-![image.png](image%203.png)
+![image.png](images/image%203.png)
 
 opening it we found OpenVPN config file:
 
-![image.png](image%204.png)
+![image.png](images/image%204.png)
 
 after some trubleshooting i figureout that i need to change this to connect to the internal domain
 
-![image.png](image%205.png)
+![image.png](images/image%205.png)
 
 so i changed it to `10.200.118.12`
 
 and we successfully connected to the internal domain
 
-![image.png](image%206.png)
+![image.png](images/image%206.png)
 
-![image.png](image%207.png)
+![image.png](images/image%207.png)
 
 from the opev vpn we just made i can understand that 
 
@@ -61,9 +61,9 @@ so we can’t ping this two windows machines because of the firewall so i tried 
 
 `nmap -p- 10.200.118.21 -Pn -v` & `nmap -p- 10.200.118.22 -Pn -v` 
 
-![image.png](image%208.png)
+![image.png](images/image%208.png)
 
-![image.png](image%209.png)
+![image.png](images/image%209.png)
 
 so i start doing a more targeted scan 
 
