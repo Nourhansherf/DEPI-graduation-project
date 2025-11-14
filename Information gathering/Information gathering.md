@@ -34,7 +34,7 @@ The bank website → [http://swift.bank.thereserve.loc/](http://swift.bank.there
 
 ### Given files:
 
-![image.png](image.png)
+![image.png](images/image.png)
 
 ---
 
@@ -49,7 +49,7 @@ To register, you need to get in touch with the government through its e-Citizen 
 
 To GET your IP range → click extend
 
-![image.png](image%201.png)
+![image.png](images/image%201.png)
 
 so we got :
 
@@ -61,9 +61,9 @@ so to connect to the SSH i use
 
 - SSH IP ⇒ `10.200.118.250`
 
-![image.png](image%202.png)
+![image.png](images/image%202.png)
 
-![image.png](image%203.png)
+![image.png](images/image%203.png)
 
 ### creds:
 
@@ -78,12 +78,12 @@ because we have a web server lets try connecting on it
 
 1. open the `/etc/hosts` file to add the ip address of the web server
 
-![image.png](image%204.png)
+![image.png](images/image%204.png)
 
 1. adding the ip address and the domain
 
-![image.png](image%205.png)
+![image.png](images/image%205.png)
 
 1. try to ping on it to check the connection
 
-![image.png](image%206.png)
+![image.png](images/image%206.png)
