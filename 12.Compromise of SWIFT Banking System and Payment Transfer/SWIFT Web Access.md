@@ -6,8 +6,7 @@ With full administrative control across the forest, the next mission was to acce
 From the **BANKDC**, using the **Enterprise Admin** account created earlier, I initiated a Remote Desktop Protocol (RDP) session to the **JMP box**.This jump host provided internal browser access to critical systems, most notably, the **SWIFT banking portal**
 
 - [x]  **First Task - SWIFT Web Access**
-
-- [x]  
+ 
 
 Upon logging into the **E-CITIZEN portal**, I selected the task titled **“SWIFT Web Access”**, which laid out a simulated procedure mimicking a real-world SWIFT transaction flow.
 
@@ -49,12 +48,12 @@ o However, as per **E-CITIZEN instructions**, no actual email check was needed.
 
 7. I returned to the **E-CITIZEN portal** and confirmed the transaction by entering Y.
 
-![image.png](attachment:1ccb81ee-c43a-4262-ae97-a379a6f3ca3e:image.png)
+![image.png](images/image1.png)
 
-![image.png](attachment:1baa313d-e84e-42e6-95a1-b71f10300d72:image.png)
+![image.png](images/image2.png)
 
-![image.png](attachment:0ee5faf8-e120-4b15-8ac9-70651a654187:image.png)
+![image.png](images/image3.png)
 
-![image.png](attachment:25fce6ed-6dd0-44fb-870c-ac6ebe56838f:image.png)
+![image.png](images/image4.png)
 
 ### Flag-17: Access to SWIFT application: THM{6bc2f0f0-1eda-47bd-9eb2-8abff4a5d4d1}
