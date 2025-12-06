@@ -59,7 +59,7 @@ Now I have:
 
 <img width="757" height="716" alt="image 14" src="https://github.com/user-attachments/assets/636b002a-68c3-4b8d-b22a-871aefc91d61" />
 
-## Flag 15: THM{ee8d8803-0551-4867-b665-e4cbf70d2652}
+## 🚩 Flag 15: THM{ee8d8803-0551-4867-b665-e4cbf70d2652}
 # Flag16 (Administrative access to Parent Domain) 
 
 <img width="877" height="538" alt="image" src="https://github.com/user-attachments/assets/e584ff32-6032-4f24-b6f5-029a1a2e8b89" />
@@ -68,4 +68,4 @@ Now I have:
 
 <img width="637" height="632" alt="image 17" src="https://github.com/user-attachments/assets/9617a204-8fc0-4ebf-91b9-7a3154e6f58b" />
 
-## Flag 16: THM{354ef832-add1-42f5-aba7-677062939ada}
+## 🚩 Flag 16: THM{354ef832-add1-42f5-aba7-677062939ada}
